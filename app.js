@@ -31,12 +31,22 @@ app.post("/",(req,res)=>{
     auth:`payal:${process.env.APIKEY}`
    }
    const request=https.request(url,options,(response)=>{
+        if(response.statusCode===200){
+            res.sendFile(__dirname+"/public/sucess.html")
+        }
+        else{
+            res.sendFile(__dirname+"/public/failure.html")
+
+        }
         response.on("data",function(data){
             console.log(JSON.parse(data))
         })
    })
    request.write(jsonData);
    request.end();
+})
+app.post("/failure",(req,res)=>{
+    res.redirect("/");
 })
 const port=3000;
 app.use(express.static("public"))
